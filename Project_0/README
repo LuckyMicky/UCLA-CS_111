@@ -1,0 +1,67 @@
+Winter 2018
+CS_111
+NAME:  Daxuan Shu
+EMAIL: daxuan@g.ucla.edu
+ID:   204853061
+
+Description for make check:
+
+I first check if the lab0 works as it is supposed:
+  	@echo "Hello Daxuan" > testin.txt; \
+	./lab0 --input=testin.txt --output=testo.txt; \
+	if [ $$? -ne 0 ]; then \
+	  echo "Input test failed"; \
+	  exit 1; \
+	fi
+	@rm -f testo.txt; \
+I first creat a file called testin.txt and write something in it.
+It should return 0.
+
+
+2. Then I checked input a non-exist file:
+   	/lab0 --input=null.txt --output=testo.txt > out 2>&1 /dev/null; \
+	if [ $$? -ne 2 ]; then \
+	  echo "Input test failed: open an unexistent file."; \
+	  exit 1; \
+	fi
+Since I did not create the null.txt before, it should exit 2.
+
+3. Then I checked to open an inputfile without read permission:
+
+   	@chmod -r testin.txt; \
+	./lab0 --input=testin.txt --output=testo.txt > out 2>&1 /dev/null; \
+	if [ $$? -ne 2 ]; then \
+	  echo "Input test failed: open an input file without permission."; \
+	  exit 1; \
+	fi
+	@rm -f testin.txt;
+I firstly remove the read permission of testin.txt file.
+It should return 1.
+
+
+4. Then I cheched to write to a output file test0.txt without write permission:
+
+   	@echo "Mimi" > testin.txt; \
+	touch testo.txt; \
+	chmod -w testo.txt; \
+	./lab0 --input=testin.txt --output=testo.txt > out 2>&1 /dev/null; \
+	if [ $$? -ne 3 ]; then \
+	  echo "Output test failed: Write to an output file without permission."; \
+	  exit 1; \
+	fi
+	@rm -f testin.txt testo.txt;
+
+
+I firstly created a output file called test0.txt and then remove its write permission
+Then it should return 3.
+
+
+5. Finally, I checked the catch options
+   	@./lab0 --segfault --catch > out 2>&1 /dev/null; \
+	if [ $$? -ne 4 ]; then \
+	  echo "Catch test failed: Return value for catch should be 4."; \
+	  exit 1; \
+	fi
+
+
+It should return 4.
